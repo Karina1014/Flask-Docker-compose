@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  api:
+    build: .
+    volumes:
+      - ./:/app  # Monta el directorio actual dentro del contenedor
+    working_dir: /app
+    environment:
+      - FLASK_APP=api.py
+      - FLASK_ENV=development  # Activa el modo de desarrollo (recarga automática)
+    command: flask run --host=0.0.0.0 --reload  # Activa la recarga automática en Flask
+    ports:
+      - 5000:5000  # Expón el puerto 5000 de Flask
+
+  webserver:
+    image: nginx:latest
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
